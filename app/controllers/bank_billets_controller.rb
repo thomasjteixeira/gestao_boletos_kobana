@@ -1,0 +1,72 @@
+# frozen_string_literal: true
+
+class BankBilletsController < ApplicationController
+  before_action :set_bank_billet, only: %i[show edit update destroy]
+
+  # GET /bank_billets or /bank_billets.json
+  def index
+    @bank_billets = BankBillet.all
+  end
+
+  # GET /bank_billets/1 or /bank_billets/1.json
+  def show; end
+
+  # GET /bank_billets/new
+  def new
+    @bank_billet = BankBillet.new
+  end
+
+  # GET /bank_billets/1/edit
+  def edit; end
+
+  # POST /bank_billets or /bank_billets.json
+  def create
+    @bank_billet = BankBillet.new(bank_billet_params)
+
+    respond_to do |format|
+      if @bank_billet.save
+        format.html { redirect_to bank_billet_url(@bank_billet), notice: 'Bank billet was successfully created.' }
+        format.json { render :show, status: :created, location: @bank_billet }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @bank_billet.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /bank_billets/1 or /bank_billets/1.json
+  def update
+    respond_to do |format|
+      if @bank_billet.update(bank_billet_params)
+        format.html { redirect_to bank_billet_url(@bank_billet), notice: 'Bank billet was successfully updated.' }
+        format.json { render :show, status: :ok, location: @bank_billet }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @bank_billet.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /bank_billets/1 or /bank_billets/1.json
+  def destroy
+    @bank_billet.destroy!
+
+    respond_to do |format|
+      format.html { redirect_to bank_billets_url, notice: 'Bank billet was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_bank_billet
+    @bank_billet = BankBillet.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def bank_billet_params
+    params.require(:bank_billet).permit(:amount, :description, :expire_at, :customer_address,
+                                        :customer_address_complement, :customer_address_number, :customer_city_name, :customer_cnpj_cpf, :customer_email, :customer_neighborhood, :customer_person_name, :customer_person_type, :customer_phone_number, :customer_state, :customer_zipcode)
+  end
+end

@@ -1,0 +1,82 @@
+<div id="<%= dom_id bank_billet %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Amount:</strong>
+    <%= bank_billet.amount %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Description:</strong>
+    <%= bank_billet.description %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Expire at:</strong>
+    <%= bank_billet.expire_at %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer address:</strong>
+    <%= bank_billet.customer_address %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer address complement:</strong>
+    <%= bank_billet.customer_address_complement %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer address number:</strong>
+    <%= bank_billet.customer_address_number %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer city name:</strong>
+    <%= bank_billet.customer_city_name %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer cnpj cpf:</strong>
+    <%= bank_billet.customer_cnpj_cpf %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer email:</strong>
+    <%= bank_billet.customer_email %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer neighborhood:</strong>
+    <%= bank_billet.customer_neighborhood %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer person name:</strong>
+    <%= bank_billet.customer_person_name %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer person type:</strong>
+    <%= bank_billet.customer_person_type %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer phone number:</strong>
+    <%= bank_billet.customer_phone_number %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer state:</strong>
+    <%= bank_billet.customer_state %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Customer zipcode:</strong>
+    <%= bank_billet.customer_zipcode %>
+  </p>
+
+  <% if action_name != "show" %>
+    <%= link_to "Show this bank billet", bank_billet, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to "Edit this bank billet", edit_bank_billet_path(bank_billet), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <hr class="mt-6">
+  <% end %>
+</div>
