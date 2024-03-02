@@ -19,13 +19,25 @@ class BankBilletsController < ApplicationController
   # GET /bank_billets/1/edit
   def edit; end
 
+  # GET /bank_billets/mock_data
+  def mock_data
+    @bank_billet = FactoryBot.build(:bank_billet)
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace('bank_billet_form', partial: 'form',
+                                                                      locals: { bank_billet: @bank_billet })
+      end
+      format.html { render :new }
+    end
+  end
+
   # POST /bank_billets or /bank_billets.json
   def create
     @bank_billet = BankBillet.new(bank_billet_params)
 
     respond_to do |format|
       if @bank_billet.save
-        format.html { redirect_to bank_billet_url(@bank_billet), notice: 'Bank billet was successfully created.' }
+        format.html { redirect_to bank_billets_url, notice: 'Bank billet was successfully created.' }
         format.json { render :show, status: :created, location: @bank_billet }
       else
         format.html { render :new, status: :unprocessable_entity }
