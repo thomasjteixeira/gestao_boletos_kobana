@@ -3,7 +3,7 @@
     <h1 class="font-bold text-4xl">New bank billet</h1>
     <%= button_to 'Gerar Dados Mocados', mock_data_bank_billets_path, method: :get, data: { turbo_frame: "bank_billet_form" }, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
-  
+
   <%= turbo_frame_tag "bank_billet_form" do %>
     <%= render "form", bank_billet: @bank_billet %>
   <% end %>
