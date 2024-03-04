@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.3",
+    "flowbite": "^2.3.0",
+    "importmap": "^0.0.0",
+    "stimulus-notification": "^2.2.0"
+  }
+}

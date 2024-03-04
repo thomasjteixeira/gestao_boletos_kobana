@@ -5,7 +5,11 @@ module.exports = {
     './public/*.html',
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
-    './app/views/**/*.{erb,haml,html,slim}'
+    './app/views/**/*.{erb,haml,html,slim}',
+    './node_modules/flowbite/**/*.js'
+  ],
+  plugins: [
+    require('flowbite/plugin')
   ],
   theme: {
     extend: {
