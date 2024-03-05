@@ -7,7 +7,9 @@ RSpec.describe BankBillet, type: :request do
 
     context 'when the request is valid and the API call is successful' do
       before do
-        allow(BoletoSimples::BankBillet).to receive(:create).and_return(double('BankBillet', persisted?: true))
+        allow(BoletoSimples::BankBillet).to receive(:create).and_return(
+          double('BankBillet', persisted?: true, attributes: bank_billet_params)
+        )
       end
 
       it 'creates a new BankBillet and redirects to the bank billets index with a notice' do

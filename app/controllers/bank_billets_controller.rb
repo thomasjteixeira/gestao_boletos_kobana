@@ -39,6 +39,7 @@ class BankBilletsController < ApplicationController
 
     respond_to do |format|
       if @bank_billet_api.persisted?
+        @bank_billet.assign_attributes(@bank_billet_api.attributes.slice(*@bank_billet.attribute_names))
         if @bank_billet.save
           format.html { redirect_to bank_billets_url, notice: 'Boleto criado com sucesso.' }
           format.json { render :show, status: :created, location: @bank_billet }
