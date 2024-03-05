@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pry'
 class BankBilletsController < ApplicationController
   before_action :set_bank_billet, only: %i[show edit update destroy]
 
@@ -34,19 +35,21 @@ class BankBilletsController < ApplicationController
   # POST /bank_billets or /bank_billets.json
   def create
     @bank_billet_api = BoletoSimples::BankBillet.create(bank_billet_params)
+    @bank_billet = BankBillet.new(bank_billet_params)
 
     respond_to do |format|
       if @bank_billet_api.persisted?
-        @bank_billet = BankBillet.new(bank_billet_params)
         if @bank_billet.save
           format.html { redirect_to bank_billets_url, notice: 'Boleto criado com sucesso.' }
           format.json { render :show, status: :created, location: @bank_billet }
         else
+          flash.now[:alert] = 'Erro ao criar o Boleto no banco de dados local.'
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @bank_billet.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render :new, status: :unprocessable_entity, notice: 'Erro ao criar o Boleto.' }
+        flash.now[:alert] = 'Erro ao criar o Boleto na API.'
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @bank_billet_api.response_errors, status: :unprocessable_entity }
       end
     end
