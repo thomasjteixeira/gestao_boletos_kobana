@@ -6,7 +6,11 @@ class BankBilletsController < ApplicationController
 
   # GET /bank_billets or /bank_billets.json
   def index
-    @bank_billets = BankBillet.all
+    current_hour = Time.now.beginning_of_hour
+    @bank_billets = Rails.cache.fetch(['bank_billets', current_hour], expires_in: 1.hour) do
+      Rails.logger.info 'Fetching bank billets from API'
+      BoletoSimples::BankBillet.all(page: 1, per_page: 50)
+    end
   end
 
   # GET /bank_billets/1 or /bank_billets/1.json
