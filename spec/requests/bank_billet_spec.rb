@@ -5,7 +5,7 @@ RSpec.describe BankBillet, type: :request do
   describe 'POST /bank_billets' do
     let(:bank_billet_params) { FactoryBot.attributes_for(:bank_billet) }
 
-    context 'when the request is valid and the API call is successful' do
+    context 'when API call is successful' do
       before do
         allow(BoletoSimples::BankBillet).to receive(:create).and_return(
           double('BankBillet', persisted?: true, attributes: bank_billet_params)
@@ -20,7 +20,7 @@ RSpec.describe BankBillet, type: :request do
       end
     end
 
-    context 'when the request is valid but the API call fails' do
+    context 'when API call fails' do
       before do
         allow(BoletoSimples::BankBillet).to receive(:create).and_return(double('BankBillet', persisted?: false))
       end
