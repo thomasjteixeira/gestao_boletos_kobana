@@ -10,6 +10,8 @@ RSpec.describe BankBillet, type: :request do
         allow(BoletoSimples::BankBillet).to receive(:create).and_return(
           double('BankBillet', persisted?: true, attributes: bank_billet_params)
         )
+
+        allow(BoletoSimples::BankBillet).to receive(:all).and_return([])
       end
 
       it 'creates a new BankBillet and redirects to the bank billets index with a notice' do
@@ -29,6 +31,38 @@ RSpec.describe BankBillet, type: :request do
         post bank_billets_path, params: { bank_billet: bank_billet_params }
         expect(response).to have_http_status(:unprocessable_entity)
         expect(flash[:alert]).to eq('Erro ao criar o Boleto na API.')
+      end
+    end
+  end
+
+  describe 'CANCEL /bank_billets/:id' do
+    let(:bank_billet) { FactoryBot.create(:bank_billet) }
+
+    context 'when API call is successful' do
+      before do
+        allow(BoletoSimples::BankBillet).to receive(:cancel).and_return(
+          double('BankBillet', response_errors: [])
+        )
+      end
+
+      it 'cancels the BankBillet and redirects to the bank billets index with a notice' do
+        post cancel_bank_billet_path(bank_billet.id)
+        expect(response).to redirect_to(bank_billets_url)
+        expect(flash[:notice]).to eq('Boleto cancelado com sucesso.')
+      end
+    end
+
+    context 'when API call fails' do
+      before do
+        allow(BoletoSimples::BankBillet).to receive(:cancel).and_return(
+          double('BankBillet', response_errors: ['error'])
+        )
+      end
+
+      it 'does not cancel the BankBillet and redirects to the bank billets index with an alert' do
+        post cancel_bank_billet_path(bank_billet.id)
+        expect(response).to redirect_to(bank_billets_url)
+        expect(flash[:alert]).to eq('Erro ao cancelar o Boleto na API.')
       end
     end
   end

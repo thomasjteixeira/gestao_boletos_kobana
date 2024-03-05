@@ -2,8 +2,6 @@
 
 require 'pry'
 class BankBilletsController < ApplicationController
-  before_action :set_bank_billet, only: %i[show edit update destroy]
-
   # GET /bank_billets or /bank_billets.json
   def index
     current_hour = Time.now.beginning_of_hour
@@ -11,6 +9,7 @@ class BankBilletsController < ApplicationController
       Rails.logger.info 'Fetching bank billets from API'
       BoletoSimples::BankBillet.all(page: 1, per_page: 50)
     end
+    # @bank_billets = BoletoSimples::BankBillet.all(page: 1, per_page: 50)
   end
 
   # GET /bank_billets/1 or /bank_billets/1.json
@@ -39,6 +38,7 @@ class BankBilletsController < ApplicationController
   # POST /bank_billets or /bank_billets.json
   def create
     @bank_billet_api = BoletoSimples::BankBillet.create(bank_billet_params)
+    @bank_billet = BankBillet.new(bank_billet_params)
 
     respond_to do |format|
       if @bank_billet_api.persisted?
@@ -75,16 +75,27 @@ class BankBilletsController < ApplicationController
     end
   end
 
-  private
+  def cancel
+    @bank_billet = BoletoSimples::BankBillet.cancel(id: params[:id])
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_bank_billet
-    @bank_billet = BankBillet.find(params[:id])
+    respond_to do |format|
+      if @bank_billet.response_errors.empty?
+        format.html { redirect_to bank_billets_url, notice: 'Boleto cancelado com sucesso.' }
+      else
+        format.html { redirect_to bank_billets_url, alert: 'Erro ao cancelar o Boleto na API.' }
+      end
+      format.json { head :no_content }
+    end
   end
+
+  private
 
   # Only allow a list of trusted parameters through.
   def bank_billet_params
     params.require(:bank_billet).permit(:amount, :description, :expire_at, :customer_address,
-                                        :customer_address_complement, :customer_address_number, :customer_city_name, :customer_cnpj_cpf, :customer_email, :customer_neighborhood, :customer_person_name, :customer_person_type, :customer_phone_number, :customer_state, :customer_zipcode)
+                                        :customer_address_complement, :customer_address_number, :customer_city_name,
+                                        :customer_cnpj_cpf, :customer_email, :customer_neighborhood,
+                                        :customer_person_name, :customer_person_type, :customer_phone_number,
+                                        :customer_state, :customer_zipcode)
   end
 end

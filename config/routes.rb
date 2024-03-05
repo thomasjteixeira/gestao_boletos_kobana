@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   resources :bank_billets do
     get 'mock_data', on: :collection
+    member do
+      post 'cancel'
+    end
   end
 
   root 'bank_billets#index'
