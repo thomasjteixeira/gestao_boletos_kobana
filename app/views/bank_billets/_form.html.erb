@@ -2,7 +2,6 @@
   <% if bank_billet&.errors&.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(bank_billet.errors.count, "error") %> prohibited this bank_billet from being saved:</h2>
-
       <ul>
         <% bank_billet.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,94 +10,84 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :amount %>
-    <%= form.text_field :amount, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <% field_class = "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div class="my-5">
+      <%= form.label :amount, "Valor" %>
+      <%= form.text_field :amount, class: field_class %>
+    </div>
+    <div class="my-5">
+      <%= form.label :expire_at, "Vencimento" %>
+      <%= form.date_field :expire_at, class: field_class %>
+    </div>
   </div>
 
   <div class="my-5">
-    <%= form.label :description %>
-    <%= form.text_field :description, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.label :description, "Descrição" %>
+    <%= form.text_field :description, class: field_class %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :expire_at %>
-    <%= form.date_field :expire_at, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="grid grid-cols-10 gap-2">
+    <div class="my-5 col-span-6">
+      <%= form.label :customer_person_name, "Nome Completo" %>
+      <%= form.text_field :customer_person_name, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
+    <div class="my-5 col-span-4">
+      <%= form.label :customer_phone_number, "Telefone" %>
+      <%= form.text_field :customer_phone_number, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :customer_address %>
-    <%= form.text_field :customer_address, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="grid grid-cols-10 gap-2">
+    <div class="my-5 col-span-6">
+      <%= form.label :customer_email, "Email" %>
+      <%= form.text_field :customer_email, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
+    <div class="my-5 col-span-4">
+      <%= form.label :customer_cnpj_cpf, "CNPJ/CPF" %>
+      <%= form.text_field :customer_cnpj_cpf, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :customer_address_complement %>
-    <%= form.text_field :customer_address_complement, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="grid grid-cols-10 gap-2">
+    <div class="my-5 col-span-8">
+      <%= form.label :customer_address, "Endereço" %>
+      <%= form.text_field :customer_address, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
+    <div class="my-5 col-span-2">
+      <%= form.label :customer_address_number, "Número" %>
+      <%= form.text_field :customer_address_number, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :customer_address_number %>
-    <%= form.text_field :customer_address_number, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="grid grid-cols-10 gap-2">
+    <div class="my-5 col-span-7">
+      <%= form.label :customer_address_complement, "Complemento" %>
+      <%= form.text_field :customer_address_complement, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
+    <div class="my-5 col-span-3">
+      <%= form.label :customer_neighborhood, "Bairro" %>
+      <%= form.text_field :customer_neighborhood, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :customer_city_name %>
-    <%= form.text_field :customer_city_name, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_cnpj_cpf %>
-    <%= form.text_field :customer_cnpj_cpf, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_email %>
-    <%= form.text_field :customer_email, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_neighborhood %>
-    <%= form.text_field :customer_neighborhood, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_person_name %>
-    <%= form.text_field :customer_person_name, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_person_type %>
-    <%= form.text_field :customer_person_type, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_phone_number %>
-    <%= form.text_field :customer_phone_number, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_state %>
-    <%= form.text_field :customer_state, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :customer_zipcode %>
-    <%= form.text_field :customer_zipcode, readonly: !bank_billet.new_record?, 
-                        class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="grid grid-cols-10 gap-2">
+    <div class="my-5 col-span-3">
+      <%= form.label :customer_zipcode, "CEP" %>
+      <%= form.text_field :customer_zipcode, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
+    <div class="my-5 col-span-5">
+      <%= form.label :customer_city_name, "Cidade" %>
+      <%= form.text_field :customer_city_name, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
+    <div class="my-5 col-span-2">
+      <%= form.label :customer_state, "Estado" %>
+      <%= form.text_field :customer_state, readonly: !bank_billet.new_record?, class: field_class %>
+    </div>
   </div>
 
   <div class="inline">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Salvar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
