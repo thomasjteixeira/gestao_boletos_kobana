@@ -4,12 +4,12 @@ require 'pry'
 class BankBilletsController < ApplicationController
   # GET /bank_billets or /bank_billets.json
   def index
-    current_hour = Time.now.beginning_of_hour
-    @bank_billets = Rails.cache.fetch(['bank_billets', current_hour], expires_in: 1.hour) do
-      Rails.logger.info 'Fetching bank billets from API'
-      BoletoSimples::BankBillet.all(page: 1, per_page: 50)
-    end
-    # @bank_billets = BoletoSimples::BankBillet.all(page: 1, per_page: 50)
+    # current_hour = Time.now.beginning_of_hour
+    # @bank_billets = Rails.cache.fetch(['bank_billets', current_hour], expires_in: 1.hour) do
+    #   Rails.logger.info 'Fetching bank billets from API'
+    #   BoletoSimples::BankBillet.all(page: 1, per_page: 50)
+    # end
+    @bank_billets = BoletoSimples::BankBillet.all(page: 1, per_page: 50)
   end
 
   # GET /bank_billets/1 or /bank_billets/1.json
@@ -21,7 +21,9 @@ class BankBilletsController < ApplicationController
   end
 
   # GET /bank_billets/1/edit
-  def edit; end
+  def edit
+    @bank_billet = BoletoSimples::BankBillet.find(params[:id])
+  end
 
   # GET /bank_billets/mock_data
   def mock_data
@@ -54,11 +56,14 @@ class BankBilletsController < ApplicationController
 
   # PATCH/PUT /bank_billets/1 or /bank_billets/1.json
   def update
+    @bank_billet = BoletoSimples::BankBillet.find(params[:id])
     respond_to do |format|
-      if @bank_billet.update(bank_billet_params)
-        format.html { redirect_to bank_billet_url(@bank_billet), notice: 'Bank billet was successfully updated.' }
+      @bank_billet.assign_attributes(bank_billet_update_params)
+      if @bank_billet.save
+        format.html { redirect_to bank_billets_url, notice: 'Boleto alterado com sucesso.' }
         format.json { render :show, status: :ok, location: @bank_billet }
       else
+        flash.now[:alert] = 'Erro ao alterar o Boleto na API.'
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @bank_billet.errors, status: :unprocessable_entity }
       end
@@ -113,5 +118,9 @@ class BankBilletsController < ApplicationController
                                         :customer_cnpj_cpf, :customer_email, :customer_neighborhood,
                                         :customer_person_name, :customer_person_type, :customer_phone_number,
                                         :customer_state, :customer_zipcode)
+  end
+
+  def bank_billet_update_params
+    params.require(:boleto_simples_bank_billet).permit(:amount, :expire_at, :description)
   end
 end

@@ -3,6 +3,6 @@
 
   <%= render "form", bank_billet: @bank_billet %>
 
-  <%= link_to "Show this bank billet", @bank_billet, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <%= link_to "Show this bank billet", bank_billet_path(@bank_billet), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   <%= link_to "Back to bank billets", bank_billets_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 </div>

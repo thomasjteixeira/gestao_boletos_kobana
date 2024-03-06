@@ -100,4 +100,41 @@ RSpec.describe BankBillet, type: :request do
       end
     end
   end
+
+  describe 'PATCH /bank_billets/:id' do
+    let(:bank_billet) { FactoryBot.create(:bank_billet) }
+    let(:valid_attributes) { { boleto_simples_bank_billet: FactoryBot.attributes_for(:bank_billet) } }
+    let(:invalid_attributes) { { boleto_simples_bank_billet: { amount: nil, description: '', expire_at: '' } } }
+
+    before do
+      allow(BoletoSimples::BankBillet).to receive(:find).and_return(bank_billet)
+    end
+
+    context 'when API call is successful' do
+      before do
+        allow(bank_billet).to receive(:save).and_return(double('BankBillet', persisted?: true))
+
+        allow(BoletoSimples::BankBillet).to receive(:all).and_return([])
+      end
+
+      it 'updates the bank billet and redirects to the bank billets index with a notice' do
+        patch bank_billet_path(bank_billet), params: valid_attributes
+        expect(response).to redirect_to(bank_billets_url)
+        follow_redirect!
+        expect(flash[:notice]).to eq('Boleto alterado com sucesso.')
+      end
+    end
+
+    context 'when API call fails' do
+      before do
+        allow(bank_billet).to receive(:update).and_return(double('BankBillet', persisted?: false))
+      end
+
+      it 'does not update the bank billet and re-renders the edit template with an alert' do
+        patch bank_billet_path(bank_billet), params: invalid_attributes
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(flash[:alert]).to eq('Erro ao alterar o Boleto na API.')
+      end
+    end
+  end
 end
