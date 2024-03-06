@@ -4,12 +4,11 @@
       <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
 
-    <%= render @bank_billet %>
+    <%= render 'bank_billet', bank_billet: @bank_billet %>
 
-    <%= link_to "Edit this bank_billet", edit_bank_billet_path(@bank_billet), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this bank_billet", bank_billet_path(@bank_billet), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <div class="flex justify-between items-center">
+      <%= link_to "Editar Boleto", edit_bank_billet_path(@bank_billet), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= link_to "Voltar para os Boletos", bank_billets_path, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     </div>
-    <%= link_to "Back to bank_billets", bank_billets_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 </div>

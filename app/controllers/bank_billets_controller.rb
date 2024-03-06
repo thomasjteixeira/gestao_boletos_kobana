@@ -2,6 +2,8 @@
 
 require 'pry'
 class BankBilletsController < ApplicationController
+  before_action :set_bank_billet, only: %i[show edit update]
+
   # GET /bank_billets or /bank_billets.json
   def index
     # current_hour = Time.now.beginning_of_hour
@@ -21,9 +23,7 @@ class BankBilletsController < ApplicationController
   end
 
   # GET /bank_billets/1/edit
-  def edit
-    @bank_billet = BoletoSimples::BankBillet.find(params[:id])
-  end
+  def edit; end
 
   # GET /bank_billets/mock_data
   def mock_data
@@ -56,7 +56,6 @@ class BankBilletsController < ApplicationController
 
   # PATCH/PUT /bank_billets/1 or /bank_billets/1.json
   def update
-    @bank_billet = BoletoSimples::BankBillet.find(params[:id])
     respond_to do |format|
       @bank_billet.assign_attributes(bank_billet_update_params)
       if @bank_billet.save
@@ -110,6 +109,10 @@ class BankBilletsController < ApplicationController
   end
 
   private
+
+  def set_bank_billet
+    @bank_billet = BoletoSimples::BankBillet.find(params[:id])
+  end
 
   # Only allow a list of trusted parameters through.
   def bank_billet_params

@@ -137,4 +137,20 @@ RSpec.describe BankBillet, type: :request do
       end
     end
   end
+
+  describe 'GET #show' do
+    let(:bank_billet) { FactoryBot.create(:bank_billet) }
+
+    before do
+      allow(BoletoSimples::BankBillet).to receive(:find).with(bank_billet.id.to_s).and_return(bank_billet)
+    end
+
+    context 'when API call is successful' do
+      it 'renders the show template with bank billet details' do
+        get bank_billet_path(bank_billet), params: { id: bank_billet.id }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(bank_billet.amount.to_s)
+      end
+    end
+  end
 end

@@ -1,82 +1,50 @@
-<div id="<%= dom_id bank_billet %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Amount:</strong>
-    <%= bank_billet.amount %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= bank_billet.description %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Expire at:</strong>
-    <%= bank_billet.expire_at %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer address:</strong>
-    <%= bank_billet.customer_address %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer address complement:</strong>
-    <%= bank_billet.customer_address_complement %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer address number:</strong>
-    <%= bank_billet.customer_address_number %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer city name:</strong>
-    <%= bank_billet.customer_city_name %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer cnpj cpf:</strong>
-    <%= bank_billet.customer_cnpj_cpf %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer email:</strong>
-    <%= bank_billet.customer_email %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer neighborhood:</strong>
-    <%= bank_billet.customer_neighborhood %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer person name:</strong>
-    <%= bank_billet.customer_person_name %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer person type:</strong>
-    <%= bank_billet.customer_person_type %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer phone number:</strong>
-    <%= bank_billet.customer_phone_number %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer state:</strong>
-    <%= bank_billet.customer_state %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Customer zipcode:</strong>
-    <%= bank_billet.customer_zipcode %>
-  </p>
+<div id="<%= dom_id bank_billet %>" class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+  <h2 class="text-xl font-semibold mb-4">Detalhes do Boleto</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="col-span-1 md:col-span-3">
+      <p class="font-medium">Descrição:</p>
+      <p class="text-gray-600"><%= bank_billet.description %></p>
+    </div>
+    <div>
+      <p class="font-medium">Valor:</p>
+      <p class="text-gray-600"><%= bank_billet.amount %></p>
+    </div>
+    <div>
+      <p class="font-medium">Vencimento:</p>
+      <p class="text-gray-600"><%= bank_billet.expire_at %></p>
+    </div>
+    <div>
+      <p class="font-medium">CNPJ/CPF:</p>
+      <p class="text-gray-600"><%= bank_billet.customer_cnpj_cpf %></p>
+    </div>
+    <div class="col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <p class="font-medium">Nome Completo:</p>
+        <p class="text-gray-600"><%= bank_billet.customer_person_name %></p>
+      </div>
+      <div>
+        <p class="font-medium">Telefone:</p>
+        <p class="text-gray-600"><%= bank_billet.customer_phone_number %></p>
+      </div>
+      <div>
+        <p class="font-medium">Email:</p>
+        <p class="text-gray-600"><%= bank_billet.customer_email %></p>
+      </div>
+    </div>
+    <div class="col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <p class="font-medium">Endereço:</p>
+        <p class="text-gray-600"><%= bank_billet.customer_address %>, <%= bank_billet.customer_address_number %></p>
+        <p class="text-gray-600"><%= bank_billet.customer_address_complement %>, <%= bank_billet.customer_neighborhood %></p>
+        <p class="text-gray-600"><%= bank_billet.customer_city_name %>, <%= bank_billet.customer_state %> - <%= bank_billet.customer_zipcode %></p>
+      </div>
+    </div>
+  </div>
 
   <% if action_name != "show" %>
-    <%= link_to "Show this bank billet", bank_billet_path(@bank_billet), class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Edit this bank billet", edit_bank_billet_path(bank_billet), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
+    <div class="mt-6 flex space-x-4">
+      <%= link_to "Mostrar este boleto", bank_billet_path(@bank_billet), class: "flex-1 text-center rounded-lg py-3 bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors" %>
+      <%= link_to "Editar este boleto", edit_bank_billet_path(bank_billet), class: "flex-1 text-center rounded-lg py-3 bg-green-500 text-white font-medium hover:bg-green-600 transition-colors" %>
+    </div>
   <% end %>
 </div>
