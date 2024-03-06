@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     get 'mock_data', on: :collection
     member do
       post 'cancel'
+      post 'pay'
     end
   end
 

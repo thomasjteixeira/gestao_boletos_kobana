@@ -66,4 +66,38 @@ RSpec.describe BankBillet, type: :request do
       end
     end
   end
+
+  describe 'PAY /bank_billets/:id' do
+    let(:bank_billet) { FactoryBot.create(:bank_billet) }
+
+    context 'when API call is successful' do
+      before do
+        allow(BoletoSimples::BankBillet).to receive(:find).and_return(bank_billet)
+        allow(BoletoSimples::BankBillet).to receive(:pay).and_return(
+          double('BankBillet', response_errors: [])
+        )
+      end
+
+      it 'paid the BankBillet and redirects to the bank billets index with a notice' do
+        post pay_bank_billet_path(bank_billet.id)
+        expect(response).to redirect_to(bank_billets_url)
+        expect(flash[:notice]).to eq('Boleto pago com sucesso.')
+      end
+    end
+
+    context 'when API call fails' do
+      before do
+        allow(BoletoSimples::BankBillet).to receive(:find).and_return(bank_billet)
+        allow(BoletoSimples::BankBillet).to receive(:pay).and_return(
+          double('BankBillet', response_errors: ['error'])
+        )
+      end
+
+      it 'does not pay the BankBillet and redirects to the bank billets index with an alert' do
+        post pay_bank_billet_path(bank_billet.id)
+        expect(response).to redirect_to(bank_billets_url)
+        expect(flash[:alert]).to eq('Erro ao pagar o boleto na API.')
+      end
+    end
+  end
 end

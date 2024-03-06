@@ -88,6 +88,22 @@ class BankBilletsController < ApplicationController
     end
   end
 
+  def pay
+    @bank_billet_to_pay = BoletoSimples::BankBillet.find(params[:id])
+    @bank_billet = BoletoSimples::BankBillet.pay(id: params[:id], paid_at: Date.today.to_s,
+                                                 paid_amount: @bank_billet_to_pay.amount,
+                                                 bank_rate: 1.1, direct_payment: true)
+
+    respond_to do |format|
+      if @bank_billet.response_errors.empty?
+        format.html { redirect_to bank_billets_url, notice: 'Boleto pago com sucesso.' }
+      else
+        format.html { redirect_to bank_billets_url, alert: 'Erro ao pagar o boleto na API.' }
+      end
+      format.json { head :no_content }
+    end
+  end
+
   private
 
   # Only allow a list of trusted parameters through.
