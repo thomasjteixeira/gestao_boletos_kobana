@@ -37,53 +37,35 @@ class BankBilletsController < ApplicationController
     @bank_billet_api = BoletoSimples::BankBillet.create(bank_billet_params)
     @bank_billet = BankBillet.new(bank_billet_params)
 
-    respond_to do |format|
-      if @bank_billet_api.persisted?
-        format.html { redirect_to bank_billets_url, notice: 'Boleto criado com sucesso.' }
-        format.json { render :show, status: :created, location: @bank_billet }
-      else
-        flash.now[:alert] = 'Erro ao criar o Boleto na API.'
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @bank_billet_api.response_errors, status: :unprocessable_entity }
-      end
+    if @bank_billet_api.persisted?
+      redirect_to bank_billets_url, notice: 'Boleto criado com sucesso.'
+    else
+      flash.now[:alert] = 'Erro ao criar o Boleto na API.'
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /bank_billets/1 or /bank_billets/1.json
   def update
-    respond_to do |format|
-      @bank_billet.assign_attributes(bank_billet_update_params)
-      if @bank_billet.save
-        format.html { redirect_to bank_billets_url, notice: 'Boleto alterado com sucesso.' }
-        format.json { render :show, status: :ok, location: @bank_billet }
-      else
-        flash.now[:alert] = 'Erro ao alterar o Boleto na API.'
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @bank_billet.errors, status: :unprocessable_entity }
-      end
+    @bank_billet.assign_attributes(bank_billet_update_params)
+    if @bank_billet.save
+      redirect_to bank_billets_url, notice: 'Boleto alterado com sucesso.'
+    else
+      flash.now[:alert] = 'Erro ao alterar o Boleto na API.'
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /bank_billets/1 or /bank_billets/1.json
-  def destroy
-    @bank_billet.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to bank_billets_url, notice: 'Bank billet was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
+  def destroy; end
 
   def cancel
     @bank_billet = BoletoSimples::BankBillet.cancel(id: params[:id])
 
-    respond_to do |format|
-      if @bank_billet.response_errors.empty?
-        format.html { redirect_to bank_billets_url, notice: 'Boleto cancelado com sucesso.' }
-      else
-        format.html { redirect_to bank_billets_url, alert: 'Erro ao cancelar o Boleto na API.' }
-      end
-      format.json { head :no_content }
+    if @bank_billet.response_errors.empty?
+      redirect_to bank_billets_url, notice: 'Boleto cancelado com sucesso.'
+    else
+      redirect_to bank_billets_url, alert: 'Erro ao cancelar o Boleto na API.'
     end
   end
 
@@ -93,13 +75,10 @@ class BankBilletsController < ApplicationController
                                                  paid_amount: @bank_billet_to_pay.amount,
                                                  bank_rate: 1.1, direct_payment: true)
 
-    respond_to do |format|
-      if @bank_billet.response_errors.empty?
-        format.html { redirect_to bank_billets_url, notice: 'Boleto pago com sucesso.' }
-      else
-        format.html { redirect_to bank_billets_url, alert: 'Erro ao pagar o boleto na API.' }
-      end
-      format.json { head :no_content }
+    if @bank_billet.response_errors.empty?
+      redirect_to bank_billets_url, notice: 'Boleto pago com sucesso.'
+    else
+      redirect_to bank_billets_url, alert: 'Erro ao pagar o boleto na API.'
     end
   end
 
