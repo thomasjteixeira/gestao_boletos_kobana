@@ -1,0 +1,23 @@
+databases:
+  - name: gestao_boletos_kobana
+    databaseName: gestao_boletos_kobana_production
+    user: gestao_boletos_kobana
+    plan: free
+
+services:
+  - type: web
+    name: gestao_boletos_kobana
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    # preDeployCommand: "bundle exec rails db:migrate" # preDeployCommand only available on paid instance types
+    startCommand: "bundle exec rails server"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gestao_boletos_kobana
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 2 # sensible default
